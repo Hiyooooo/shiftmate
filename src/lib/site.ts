@@ -3,7 +3,7 @@
  */
 export const site = {
   name: "ShiftMate",
-  url: "https://shiftmate.id", // PLACEHOLDER: ganti dengan domain asli saat produksi
+  url: "https://shiftmate-hris.vercel.app", // PLACEHOLDER: ganti dengan domain asli saat produksi
   title: "ShiftMate - Aplikasi HRIS Absensi Shift & Operasional Lapangan",
   description:
     "Atur rotasi shift kerja, absensi GPS anti-fake, dan izin tim lapangan dengan mudah lewat aplikasi mobile.",
