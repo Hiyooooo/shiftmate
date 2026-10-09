@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+:root {
+  /* Permukaan */
+  --white: #FFFFFF;
+  --cream: #FFF7ED;
+  --cream-2: #FFEDD5;
+  --mist: #F1F5F9;
+  --slate-800: #1E293B;
+  --slate-900: #0F172A;
+  --slate-950: #0B1220;
+
+  /* Garis */
+  --line: #E2E8F0;
+  --line-2: #CBD5E1;
+  --control: #64748B;
+  --line-dark: rgba(255, 255, 255, 0.14);
+
+  /* Teks di atas terang */
+  --ink: #0F172A;
+  --ink-2: #475569;
+  --ink-3: #64748B;
+
+  /* Teks di atas gelap */
+  --on-dark: #FFFFFF;
+  --on-dark-2: #CBD5E1;
+  --on-dark-3: #94A3B8;
+
+  /* Orange (Sunset) */
+  --orange: #F97316;
+  --orange-600: #EA580C;
+  --orange-700: #C2410C;
+
+  /* Status */
+  --ok: #15803D;
+  --ok-bg: #DCFCE7;
+  --warn: #B45309;
+  --warn-bg: #FEF3C7;
+  --danger: #B91C1C;
+  --danger-bg: #FEE2E2;
+
+  /* Bayangan: HANYA untuk ponsel, badge melayang, bottom-sheet */
+  --shadow-float: 0 12px 32px -8px rgba(15, 23, 42, 0.22), 0 2px 6px rgba(15, 23, 42, 0.08);
+
+  /* Kontak WhatsApp */
+  --wa-green: #25D366;
+}
+
+@theme inline {
+  --color-white: var(--white);
+  --color-cream: var(--cream);
+  --color-cream-2: var(--cream-2);
+  --color-mist: var(--mist);
+  --color-slate-800: var(--slate-800);
+  --color-slate-900: var(--slate-900);
+  --color-slate-950: var(--slate-950);
+
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-control: var(--control);
+  --color-line-dark: var(--line-dark);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-2: var(--on-dark-2);
+  --color-on-dark-3: var(--on-dark-3);
+
+  --color-orange: var(--orange);
+  --color-orange-600: var(--orange-600);
+  --color-orange-700: var(--orange-700);
+
+  --color-ok: var(--ok);
+  --color-ok-bg: var(--ok-bg);
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-wa-green: var(--wa-green);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+/* Base resets & typography */
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans), sans-serif;
+  color: var(--ink);
+  background-color: var(--white);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Tabular nums for numbers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom scrollbar hiding for phone inner screens */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Shadow token */
+.shadow-float {
+  box-shadow: var(--shadow-float);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 3px solid var(--slate-900);
+  outline-offset: 2px;
+}
+
+.focus-dark:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
