@@ -6,8 +6,28 @@ import { Logo } from "../ui/Logo";
 import { Button } from "../ui/Button";
 import { site } from "@/lib/site";
 
-export function Navbar() {
+interface NavbarProps {
+  branding?: {
+    logo_url?: string;
+  };
+  siteName?: string;
+  whatsappUrl?: string;
+  email?: string;
+}
+
+export function Navbar({
+  branding,
+  siteName,
+  whatsappUrl,
+  email,
+}: NavbarProps = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const demoHref =
+    whatsappUrl ||
+    `mailto:${email || site.email}?subject=Minta%20Demo%20${encodeURIComponent(
+      siteName || "ShiftMate"
+    )}`;
 
   // Tutup menu saat tombol ESC ditekan
   useEffect(() => {
@@ -34,7 +54,7 @@ export function Navbar() {
       <div className="max-w-[1160px] mx-auto h-full px-5 lg:px-8 flex items-center justify-between">
         {/* Logo Brand */}
         <a href="#simulasi" className="focus-visible:outline-slate-900 rounded-lg">
-          <Logo />
+          <Logo logoUrl={branding?.logo_url} siteName={siteName} />
         </a>
 
         {/* Navigasi Desktop Anchor */}
@@ -70,7 +90,7 @@ export function Navbar() {
           </Button>
           <Button
             variant="primary"
-            href={`mailto:${site.email}?subject=Minta%20Demo%20ShiftMate`}
+            href={demoHref}
             className="h-10 px-5 text-xs"
           >
             Minta Demo
@@ -81,7 +101,7 @@ export function Navbar() {
         <div className="flex sm:hidden items-center gap-2">
           <Button
             variant="primary"
-            href={`mailto:${site.email}?subject=Minta%20Demo%20ShiftMate`}
+            href={demoHref}
             className="h-9 px-3 text-xs"
           >
             Minta Demo
@@ -105,7 +125,7 @@ export function Navbar() {
           className="fixed inset-0 z-50 bg-white flex flex-col p-6 animate-fadeIn"
         >
           <div className="flex items-center justify-between pb-4 border-b border-line">
-            <Logo />
+            <Logo logoUrl={branding?.logo_url} siteName={siteName} />
             <button
               onClick={() => setMobileMenuOpen(false)}
               aria-label="Tutup menu"
@@ -161,10 +181,10 @@ export function Navbar() {
           <div className="mt-auto space-y-3 pt-6 border-t border-line">
             <Button
               variant="primary"
-              href={`mailto:${site.email}?subject=Minta%20Demo%20ShiftMate`}
+              href={demoHref}
               className="w-full"
             >
-              Minta Demo ShiftMate
+              Minta Demo {siteName || "ShiftMate"}
             </Button>
             <Button
               variant="secondary"

@@ -14,9 +14,11 @@ import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { generateJsonLd } from "@/lib/schema";
+import { getSiteConfig } from "@/lib/api";
 
-export default function HomePage() {
-  const jsonLd = generateJsonLd();
+export default async function HomePage() {
+  const config = await getSiteConfig();
+  const jsonLd = generateJsonLd(config);
 
   return (
     <>
@@ -27,11 +29,20 @@ export default function HomePage() {
       />
 
       {/* 1. Header & Navigasi */}
-      <Navbar />
+      <Navbar
+        branding={config.branding}
+        siteName={config.site.name}
+        whatsappUrl={config.cta.whatsapp_url}
+        email={config.contact.email}
+      />
 
       <main id="konten-utama">
         {/* 2. Hero Section dengan Mockup Ponsel Interaktif */}
-        <HeroSection />
+        <HeroSection
+          heroData={config.hero}
+          whatsappUrl={config.cta.whatsapp_url}
+          email={config.contact.email}
+        />
 
         {/* 3. Strip Bukti Angka & Klien */}
         <TrustStrip />
@@ -42,7 +53,7 @@ export default function HomePage() {
         {/* 5. Masalah -> Solusi */}
         <ProblemSection />
 
-        {/* 6. Lima Modul Utama Berurutan (Dibungkus State DemoProvider) */}
+        {/* 6. Lima Modul Utama Berurutan (Dibungkus State DemoProvider) - Tetap Asli */}
         <DemoProvider>
           <ModulesHub />
         </DemoProvider>
@@ -60,14 +71,27 @@ export default function HomePage() {
         <FaqSection />
 
         {/* 11. Final CTA Penutup */}
-        <FinalCtaSection />
+        <FinalCtaSection
+          whatsappUrl={config.cta.whatsapp_url}
+          email={config.contact.email}
+          siteName={config.site.name}
+        />
       </main>
 
       {/* 12. Footer */}
-      <Footer />
+      <Footer
+        footerData={{
+          email: config.contact.email,
+          phone: config.contact.phone,
+          socialLinks: config.contact.social_links,
+          copyright: config.footer_text,
+          logoUrl: config.branding.logo_url,
+          name: config.site.name,
+        }}
+      />
 
       {/* Tombol Kapsul Melayang WhatsApp */}
-      <WhatsAppButton />
+      <WhatsAppButton whatsappUrl={config.cta.whatsapp_url} />
     </>
   );
 }

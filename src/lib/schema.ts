@@ -1,24 +1,31 @@
 import { site } from "./site";
 import { FAQ_LIST } from "./data";
+import type { SiteConfig } from "./api";
 
-export function generateJsonLd() {
+export function generateJsonLd(config?: SiteConfig) {
+  const siteUrl = config?.site.domain || site.url;
+  const siteName = config?.site.name || site.name;
+  const siteDescription = config?.seo.meta_description || site.description;
+  const siteEmail = config?.contact.email || site.email;
+  const siteLogo = config?.branding.logo_url || `${siteUrl}/favicon.svg`;
+
   const organization = {
     "@type": "Organization",
-    "@id": `${site.url}/#organization`,
-    name: site.name,
-    url: site.url,
-    logo: `${site.url}/favicon.svg`,
-    email: site.email,
+    "@id": `${siteUrl}/#organization`,
+    name: siteName,
+    url: siteUrl,
+    logo: siteLogo,
+    email: siteEmail,
   };
 
   const website = {
     "@type": "WebSite",
-    "@id": `${site.url}/#website`,
-    url: site.url,
-    name: site.name,
+    "@id": `${siteUrl}/#website`,
+    url: siteUrl,
+    name: siteName,
     inLanguage: "id-ID",
     publisher: {
-      "@id": `${site.url}/#organization`,
+      "@id": `${siteUrl}/#organization`,
     },
   };
 

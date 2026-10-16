@@ -1,10 +1,56 @@
 import { ImageResponse } from "next/og";
+import { getSiteConfig } from "@/lib/api";
 
-export const alt = "ShiftMate: ponsel menampilkan clock-in selfie dan lokasi GPS dalam radius";
+export const alt =
+  "ShiftMate: ponsel menampilkan clock-in selfie dan lokasi GPS dalam radius";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function Image() {
+// Revalidasi cache berkala (120 detik)
+export const revalidate = 120;
+
+export default async function Image() {
+  const config = await getSiteConfig();
+
+  // 1. Jika ada banner yang diunggah dari Admin Panel:
+  // Ambil gambar dari URL banner tersebut dan langsung sajikan file gambarnya sebagai respons.
+  if (config.seo.og_image_url && config.seo.og_image_url.trim() !== "") {
+    try {
+      const response = await fetch(config.seo.og_image_url);
+      if (response.ok) {
+        const imageContentType =
+          response.headers.get("content-type") || "image/png";
+        const buffer = await response.arrayBuffer();
+        const revalidateSeconds =
+          Number(process.env.REVALIDATE_SECONDS) || 120;
+        return new Response(buffer, {
+          headers: {
+            "Content-Type": imageContentType,
+            "Cache-Control": `public, max-age=${revalidateSeconds}, stale-while-revalidate=${revalidateSeconds}`,
+          },
+        });
+      }
+    } catch (error) {
+      console.warn(
+        `[OG Image] Gagal mengambil gambar dari ${config.seo.og_image_url}. Beralih ke kartu visual bawaan.`,
+        error
+      );
+    }
+  }
+
+  // 2. Jika belum ada banner yang diunggah (mode bawaan):
+  // Gunakan desain visual bawaan ShiftMate dengan teks dinamis dari API
+  const headline =
+    config.hero.headline ||
+    config.seo.meta_title ||
+    "Absen shift dari ponsel. Tanpa titip absen.";
+  const subheadline =
+    config.hero.subheadline ||
+    config.seo.meta_description ||
+    "Aplikasi HRIS mobile untuk F&B, hotel, logistik, dan pekerja multi-shift.";
+  const siteName = config.site.name || "ShiftMate";
+  const primaryColor = config.branding.primary_color || "#F97316";
+
   return new ImageResponse(
     (
       <div
@@ -44,7 +90,7 @@ export default function Image() {
                 width: "48px",
                 height: "48px",
                 borderRadius: "14px",
-                backgroundColor: "#F97316", // orange
+                backgroundColor: primaryColor,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -68,34 +114,34 @@ export default function Image() {
                 letterSpacing: "-0.03em",
               }}
             >
-              ShiftMate
+              {siteName}
             </span>
           </div>
 
           {/* Headline Utama */}
           <div
             style={{
-              fontSize: "50px",
+              fontSize: "46px",
               fontWeight: 800,
               color: "#FFFFFF",
-              lineHeight: 1.1,
+              lineHeight: 1.15,
               letterSpacing: "-0.02em",
-              marginBottom: "24px",
+              marginBottom: "20px",
             }}
           >
-            Absen shift dari ponsel. Tanpa titip absen.
+            {headline}
           </div>
 
           {/* Subtitle */}
           <div
             style={{
-              fontSize: "20px",
+              fontSize: "18px",
               color: "#CBD5E1",
               lineHeight: 1.5,
               marginBottom: "32px",
             }}
           >
-            Aplikasi HRIS mobile untuk F&B, hotel, logistik, dan pekerja multi-shift.
+            {subheadline}
           </div>
 
           {/* Tiga Pilar Fitur */}
@@ -105,7 +151,7 @@ export default function Image() {
               alignItems: "center",
               gap: "14px",
               fontSize: "15px",
-              color: "#F97316",
+              color: primaryColor,
               fontWeight: 700,
             }}
           >
@@ -134,7 +180,7 @@ export default function Image() {
               height: "170px",
               borderTopLeftRadius: "170px",
               borderTopRightRadius: "170px",
-              backgroundColor: "#F97316",
+              backgroundColor: primaryColor,
               top: "130px",
               left: "20px",
               opacity: 0.9,
@@ -267,10 +313,14 @@ export default function Image() {
               boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
             }}
           >
-            <span style={{ fontSize: "12px", fontWeight: 800, color: "#0F172A" }}>
+            <span
+              style={{ fontSize: "12px", fontWeight: 800, color: "#0F172A" }}
+            >
               Shift Pagi
             </span>
-            <span style={{ fontSize: "10px", color: "#475569" }}>07:00 – 15:00</span>
+            <span style={{ fontSize: "10px", color: "#475569" }}>
+              07:00 – 15:00
+            </span>
           </div>
         </div>
       </div>

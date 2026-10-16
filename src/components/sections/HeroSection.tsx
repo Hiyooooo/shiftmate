@@ -6,7 +6,27 @@ import { HeroPhone } from "../phone/HeroPhone";
 import { SunDisc } from "../art/SunDisc";
 import { site } from "@/lib/site";
 
-export function HeroSection() {
+interface HeroProps {
+  heroData?: {
+    headline?: string;
+    subheadline?: string;
+    cta_text?: string;
+  };
+  whatsappUrl?: string;
+  email?: string;
+}
+
+export function HeroSection({ heroData, whatsappUrl, email }: HeroProps = {}) {
+  const headline =
+    heroData?.headline || "Absen shift dari ponsel. Tanpa titip absen.";
+  const subheadline =
+    heroData?.subheadline ||
+    "Selfie memastikan orangnya, GPS memastikan tempatnya. Rotasi pagi, siang, dan malam tersusun otomatis, jam kerjanya langsung masuk ke slip gaji.";
+  const ctaText = heroData?.cta_text || "Minta Demo";
+  const primaryHref =
+    whatsappUrl ||
+    `mailto:${email || site.email}?subject=Minta%20Demo%20ShiftMate`;
+
   return (
     <section
       id="simulasi"
@@ -22,21 +42,21 @@ export function HeroSection() {
             </Eyebrow>
 
             <h1 className="font-display text-4xl sm:text-5xl lg:text-[56px] font-extrabold text-slate-900 tracking-tight leading-[1.05] mb-5">
-              Absen shift dari ponsel. Tanpa titip absen.
+              {headline}
             </h1>
 
             <p className="text-base sm:text-lg text-ink-2 leading-relaxed mb-8 max-w-xl">
-              Selfie memastikan orangnya, GPS memastikan tempatnya. Rotasi pagi, siang, dan malam tersusun otomatis, jam kerjanya langsung masuk ke slip gaji.
+              {subheadline}
             </p>
 
             {/* Tombol CTA */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto mb-4">
               <Button
                 variant="primary"
-                href={`mailto:${site.email}?subject=Minta%20Demo%20ShiftMate`}
+                href={primaryHref}
                 className="w-full sm:w-auto"
               >
-                Minta Demo
+                {ctaText}
               </Button>
               <Button variant="secondary" href="#modul" className="w-full sm:w-auto">
                 Lihat Fitur

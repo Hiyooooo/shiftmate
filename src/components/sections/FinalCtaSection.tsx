@@ -6,7 +6,23 @@ import { PhoneFrame } from "../phone/PhoneFrame";
 import { SunDisc } from "../art/SunDisc";
 import { site } from "@/lib/site";
 
-export function FinalCtaSection() {
+interface FinalCtaProps {
+  whatsappUrl?: string;
+  email?: string;
+  siteName?: string;
+}
+
+export function FinalCtaSection({
+  whatsappUrl,
+  email,
+  siteName = "ShiftMate",
+}: FinalCtaProps = {}) {
+  const primaryHref =
+    whatsappUrl ||
+    `mailto:${email || site.email}?subject=Minta%20Demo%20${encodeURIComponent(
+      siteName
+    )}`;
+
   return (
     <section
       className="relative bg-slate-800 py-16 lg:py-28 overflow-hidden text-white"
@@ -39,9 +55,9 @@ export function FinalCtaSection() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
               <Button
                 variant="primary"
-                href={`mailto:${site.email}?subject=Minta%20Demo%20ShiftMate`}
+                href={primaryHref}
               >
-                Minta Demo ShiftMate
+                Minta Demo {siteName}
               </Button>
               <Button variant="secondary-dark" href="#harga">
                 Lihat Pilihan Harga

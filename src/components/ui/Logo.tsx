@@ -3,9 +3,29 @@ import React from "react";
 interface LogoProps {
   className?: string;
   isDark?: boolean;
+  logoUrl?: string | null;
+  siteName?: string;
 }
 
-export function Logo({ className = "", isDark = false }: LogoProps) {
+export function Logo({
+  className = "",
+  isDark = false,
+  logoUrl,
+  siteName = "ShiftMate",
+}: LogoProps) {
+  if (logoUrl && logoUrl.trim() !== "" && logoUrl !== "/favicon.svg") {
+    return (
+      <div className={`inline-flex items-center gap-2.5 ${className}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={logoUrl}
+          alt={siteName}
+          className="h-8 w-auto max-w-[160px] object-contain rounded"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={`inline-flex items-center gap-2.5 ${className}`}>
       {/* Simbol Matahari & Horizon (Custom SVG) */}
@@ -41,7 +61,7 @@ export function Logo({ className = "", isDark = false }: LogoProps) {
           isDark ? "text-white" : "text-slate-900"
         }`}
       >
-        ShiftMate
+        {siteName}
       </span>
     </div>
   );
